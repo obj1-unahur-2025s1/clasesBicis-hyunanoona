@@ -1,3 +1,5 @@
+import depositos.*
+import accesorios.*
 
 //bici
 
@@ -5,37 +7,41 @@ class Bici{
   const rodado
   const largo
   const marca
-  const accesorios
+  const accesorios = []
 
-  method altura() = rodado - 2.5 + 15
+  method marca() = marca
+
+  method largo() = largo
+
+  method accesorios() = accesorios
+  
+  method altura() = rodado * 2.5 + 15
+  
   method velocidad() = if (largo > 120) rodado + 6 else rodado + 2
+  
   method carga() = accesorios.sum{a => a.carga()}
+
+  method peso() = rodado / 2 + accesorios.sum{a => a.peso()}
+  
   method tieneLuz() = accesorios.any{a => a.esLuminoso()}
-  method agregarAccesorio(unAccesorio)
+  
+  method agregarAccesorio(unAccesorio) {accesorios.add(unAccesorio)}
+  
   method cantidadAccesoriosLivianos() = accesorios.count{a => a.peso() < 1}
+
+  method initialize(){
+    if (not marcas.validas().contains(marca)){
+      self.error(marca.toString() + "no es una marca valida")
+    } 
+  }
 }
 
-//accesorios
+//marcas 
 
-class Farolito{
-  method peso() = 0.5
-  method carga() = 0
-  method esLuminoso() = true
-}
+object olmo{}
 
-class Canasto {
-  const volumen  
-  method peso() = volumen / 10
-  method carga() = volumen * 2
-  method esLuminoso() = false
-}
+object legnano{}
 
-class Morral{
-  const largo
-  var tieneOjoDeGato
-  method ponerOjoDeGato() {tieneOjoDeGato = true}
-  method quitarOjoDeGato() {tieneOjoDeGato = false}
-  method peso() = 1.2
-  method carga() = largo / 3
-  method esLuminoso() = tieneOjoDeGato
+object marcas{
+  method validas() = [olmo, legnano]
 }
